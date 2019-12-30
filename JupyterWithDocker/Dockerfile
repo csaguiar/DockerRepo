@@ -1,6 +1,6 @@
-FROM "ubuntu:bionic"
+FROM ubuntu:bionic
 
-MAINTAINER chamalgomes166@outlook.com
+LABEL maintainer="chamalgomes166@outlook.com"
 
 RUN useradd -ms /bin/bash docker
 RUN su docker
@@ -20,8 +20,8 @@ RUN apt-get update | sed -e "s/^/$(date +%Y%m%d-%H%M%S) :  /" 2>&1 | tee -a ${LO
 COPY requirements.txt /root/datascience/requirements.txt
 WORKDIR /root/datascience
 RUN pip3 install -r requirements.txt
- 
+
 RUN jupyter notebook --generate-config --allow-root
 RUN echo "c.NotebookApp.password = u'sha1:6a3f528eec40:6e896b6e4828f525a6e20e5411cd1c8075d68619'" >> /root/.jupyter/jupyter_notebook_config.py
 
-CMD ["jupyter", "notebook", "--allow-root", "--notebook-dir=.", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
+CMD ["jupyter-lab", "--allow-root", "--notebook-dir=.", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
